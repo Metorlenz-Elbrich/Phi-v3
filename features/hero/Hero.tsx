@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, ShieldCheck, Code2, Sparkles } from "lucide-react";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { ButtonLink } from "@/components/ui/Button";
+import { PhiMark } from "@/components/ui/PhiMark";
 import { SculptureFallback } from "./SculptureFallback";
 import { BRAND_NARRATIVE } from "@/lib/content";
 
@@ -15,10 +16,10 @@ const Sculpture = dynamic(() => import("./Sculpture").then((m) => m.Sculpture), 
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const HERO_PILLS = [
-  { icon: Code2, label: "Engineering" },
-  { icon: Sparkles, label: "Design" },
-  { icon: ShieldCheck, label: "Security" },
+const HERO_DUALITY = [
+  { icon: Code2, label: "Structure", side: "Engineering" },
+  { icon: Sparkles, label: "Fluidity", side: "Design" },
+  { icon: ShieldCheck, label: "Trust", side: "Security" },
 ] as const;
 
 export function Hero() {
@@ -37,6 +38,33 @@ export function Hero() {
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-ink-900" />
       </div>
 
+      {/* Massive Φ watermark — quiet, behind everything */}
+      <div
+        className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 hidden -translate-x-1/2 select-none items-center justify-center md:flex"
+        aria-hidden="true"
+      >
+        <PhiMark
+          size="display"
+          weight="light"
+          decorative
+          className="text-text-primary/[0.025]"
+        />
+      </div>
+
+      {/* Editorial corner mark — top-right studio stamp */}
+      <div className="shell relative">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.9, ease: EASE, delay: 0.3 }}
+          className="pointer-events-none absolute right-0 top-[-12px] hidden flex-col items-end gap-1 font-mono text-[10px] uppercase tracking-[0.22em] text-text-muted md:flex"
+        >
+          <span className="text-accent">Φ — Studio</span>
+          <span>Engineering · Design · Cybersecurity</span>
+          <span className="text-text-muted/60">MMXXVI · Worldwide</span>
+        </motion.div>
+      </div>
+
       <div className="shell grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-8">
         <div className="lg:col-span-7 flex flex-col gap-8">
           <motion.div
@@ -45,9 +73,15 @@ export function Hero() {
             transition={{ duration: 0.7, ease: EASE }}
             className="inline-flex items-center gap-3 self-start rounded-full border border-line bg-white/[0.02] px-3.5 py-1.5"
           >
+            <PhiMark
+              size="md"
+              className="text-accent translate-y-[1px]"
+              decorative
+            />
+            <span className="h-3 w-px bg-line" aria-hidden="true" />
             <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_12px_2px_rgba(0,217,255,0.7)] animate-breathe-glow" />
             <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted">
-              Engineering · Design · Cybersecurity
+              Studio · Engineering · Design · Cybersecurity
             </span>
           </motion.div>
 
@@ -59,25 +93,11 @@ export function Hero() {
                 transition={{ duration: 0.9, ease: EASE, delay: 0.05 }}
                 className="block"
               >
-                Premium digital
-              </motion.span>
-            </span>
-            <span className="block overflow-hidden">
-              <motion.span
-                initial={{ y: "110%" }}
-                animate={{ y: "0%" }}
-                transition={{ duration: 0.9, ease: EASE, delay: 0.15 }}
-                className="block"
-              >
-                products,{" "}
+                Built with{" "}
                 <span className="relative inline-block">
                   <span className="bg-gradient-to-br from-accent-soft via-accent to-accent-deep bg-clip-text text-transparent">
-                    engineered
+                    structure.
                   </span>
-                  <span
-                    className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent"
-                    aria-hidden="true"
-                  />
                 </span>
               </motion.span>
             </span>
@@ -85,10 +105,23 @@ export function Hero() {
               <motion.span
                 initial={{ y: "110%" }}
                 animate={{ y: "0%" }}
-                transition={{ duration: 0.9, ease: EASE, delay: 0.25 }}
-                className="block"
+                transition={{ duration: 0.9, ease: EASE, delay: 0.18 }}
+                className="block text-text-primary/90"
               >
-                with discipline.
+                Designed with{" "}
+                <span className="bg-gradient-to-br from-accent-soft via-accent to-accent-deep bg-clip-text text-transparent">
+                  fluidity.
+                </span>
+              </motion.span>
+            </span>
+            <span className="block overflow-hidden">
+              <motion.span
+                initial={{ y: "110%" }}
+                animate={{ y: "0%" }}
+                transition={{ duration: 0.9, ease: EASE, delay: 0.31 }}
+                className="block text-text-muted"
+              >
+                Held to a single standard.
               </motion.span>
             </span>
           </h1>
@@ -96,19 +129,21 @@ export function Hero() {
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE, delay: 0.4 }}
+            transition={{ duration: 0.7, ease: EASE, delay: 0.5 }}
             className="max-w-xl text-lg leading-relaxed text-text-muted text-pretty"
           >
-            PhiBrain is a studio of engineers, designers and security
-            specialists. We craft websites, web and mobile applications, SaaS
-            platforms and security postures for businesses that hold themselves
-            to a higher standard.
+            PhiBrain is a studio where engineering precision meets design
+            fluidity. We craft websites, web and mobile applications, SaaS
+            platforms — secured at every layer, scaled by intent.{" "}
+            <span className="text-text-primary/80">
+              Φ is the constant in everything we ship.
+            </span>
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE, delay: 0.5 }}
+            transition={{ duration: 0.7, ease: EASE, delay: 0.6 }}
             className="flex flex-wrap items-center gap-3"
           >
             <ButtonLink href="#contact" size="lg" withArrow>
@@ -119,25 +154,29 @@ export function Hero() {
             </ButtonLink>
           </motion.div>
 
+          {/* Duality strip — Structure · Fluidity · Trust */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, ease: EASE, delay: 0.7 }}
-            className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-2"
+            transition={{ duration: 1, ease: EASE, delay: 0.8 }}
+            className="mt-3 grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-line bg-line"
           >
-            {HERO_PILLS.map(({ icon: Icon, label }) => (
-              <span
+            {HERO_DUALITY.map(({ icon: Icon, label, side }) => (
+              <div
                 key={label}
-                className="inline-flex items-center gap-2 text-sm text-text-muted"
+                className="flex flex-col gap-1.5 bg-ink-700/60 px-4 py-3"
               >
-                <Icon size={14} strokeWidth={1.75} className="text-accent" />
-                {label}
-              </span>
+                <div className="flex items-center gap-2">
+                  <Icon size={13} strokeWidth={1.75} className="text-accent" />
+                  <span className="font-display text-sm text-text-primary">
+                    {label}
+                  </span>
+                </div>
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-text-muted">
+                  {side}
+                </span>
+              </div>
             ))}
-            <span className="hidden h-3 w-px bg-line sm:inline-block" aria-hidden="true" />
-            <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted">
-              {BRAND_NARRATIVE.join("  ")}
-            </span>
           </motion.div>
         </div>
 
@@ -148,14 +187,37 @@ export function Hero() {
           className="relative lg:col-span-5 flex items-center justify-center"
         >
           {isHeavy ? <Sculpture /> : <SculptureFallback />}
+
+          {/* Sculpture caption — editorial detail */}
+          <div className="pointer-events-none absolute -bottom-2 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1 md:flex">
+            <span className="h-3 w-px bg-line" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-text-muted">
+              <span className="text-accent">Φ</span> · The Constant
+            </span>
+          </div>
         </motion.div>
       </div>
 
-      {/* Bottom hairline indicator */}
-      <div className="shell mt-20 hidden items-center justify-between text-xs text-text-muted md:flex">
+      {/* Bottom hairline indicator with brand narrative */}
+      <div className="shell mt-24 hidden items-center gap-6 text-[11px] text-text-muted md:flex">
         <span className="font-mono uppercase tracking-[0.22em]">Scroll</span>
-        <div className="hairline mx-6 flex-1" />
-        <span className="font-mono uppercase tracking-[0.22em]">Phi · 01</span>
+        <div className="hairline flex-1" />
+        <span className="font-mono uppercase tracking-[0.22em] text-text-primary/70">
+          {BRAND_NARRATIVE.map((word, i) => (
+            <span key={word}>
+              {i > 0 ? (
+                <span className="mx-3 text-accent" aria-hidden="true">
+                  Φ
+                </span>
+              ) : null}
+              {word}
+            </span>
+          ))}
+        </span>
+        <div className="hairline w-16" />
+        <span className="font-mono uppercase tracking-[0.22em] text-accent">
+          Φ · 00
+        </span>
       </div>
     </section>
   );

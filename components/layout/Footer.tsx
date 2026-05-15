@@ -1,5 +1,6 @@
 import { Logo } from "@/components/ui/Logo";
-import { NAV_LINKS } from "@/lib/content";
+import { PhiMark } from "@/components/ui/PhiMark";
+import { NAV_LINKS, BRAND_NARRATIVE } from "@/lib/content";
 
 const FOOTER_GROUPS = [
   {
@@ -25,28 +26,39 @@ const FOOTER_GROUPS = [
 export function Footer() {
   return (
     <footer className="relative border-t border-line bg-ink-900">
+      {/* Top brand bar with Φ signature */}
+      <div className="border-b border-line">
+        <div className="shell flex flex-col gap-4 py-6 text-xs sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <PhiMark size="md" className="text-accent" decorative />
+            <span className="font-mono uppercase tracking-[0.22em] text-text-muted">
+              The constant of <span className="text-text-primary">exceptional digital craft</span>
+            </span>
+          </div>
+          <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-text-muted">
+            {BRAND_NARRATIVE.map((word, i) => (
+              <span key={word} className="flex items-center gap-2">
+                {i > 0 ? (
+                  <span className="text-accent" aria-hidden="true">Φ</span>
+                ) : null}
+                <span>We {word}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div className="shell grid gap-14 py-20 md:grid-cols-12">
         <div className="md:col-span-5 flex flex-col gap-6">
           <Logo size={28} />
           <p className="max-w-sm text-text-muted leading-relaxed">
             We design, build, secure and scale exceptional digital products.
-            Engineering-grade craftsmanship for serious businesses.
+            Engineering precision and design fluidity, held to a single standard.
           </p>
-          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-text-muted/80">
-            <span className="font-mono uppercase tracking-[0.22em] text-accent">
-              We design.
-            </span>
-            <span aria-hidden="true">·</span>
-            <span className="font-mono uppercase tracking-[0.22em] text-accent">
-              We build.
-            </span>
-            <span aria-hidden="true">·</span>
-            <span className="font-mono uppercase tracking-[0.22em] text-accent">
-              We secure.
-            </span>
-            <span aria-hidden="true">·</span>
-            <span className="font-mono uppercase tracking-[0.22em] text-accent">
-              We scale.
+          <div className="mt-2 flex items-center gap-3 text-xs text-text-muted">
+            <PhiMark size="sm" className="text-accent" decorative />
+            <span className="font-mono uppercase tracking-[0.22em]">
+              Studio · MMXXVI · Worldwide
             </span>
           </div>
         </div>
@@ -54,8 +66,8 @@ export function Footer() {
         <div className="md:col-span-7 grid grid-cols-2 gap-8 sm:grid-cols-3">
           {FOOTER_GROUPS.map((group) => (
             <div key={group.title} className="flex flex-col gap-4">
-              <h4 className="font-mono text-xs uppercase tracking-[0.22em] text-text-muted">
-                {group.title}
+              <h4 className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.22em] text-text-muted">
+                <span className="text-accent">Φ</span> · {group.title}
               </h4>
               <ul className="flex flex-col gap-2.5">
                 {group.links.map((link) => (
@@ -72,8 +84,8 @@ export function Footer() {
             </div>
           ))}
           <div className="flex flex-col gap-4">
-            <h4 className="font-mono text-xs uppercase tracking-[0.22em] text-text-muted">
-              Contact
+            <h4 className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.22em] text-text-muted">
+              <span className="text-accent">Φ</span> · Contact
             </h4>
             <ul className="flex flex-col gap-2.5">
               <li>
@@ -92,7 +104,7 @@ export function Footer() {
       <div className="border-t border-line">
         <div className="shell flex flex-col gap-3 py-6 text-xs text-text-muted sm:flex-row sm:items-center sm:justify-between">
           <p className="font-mono">
-            © {new Date().getFullYear()} PhiBrain. All rights reserved.
+            © {new Date().getFullYear()} PhiBrain · All rights reserved.
           </p>
           <nav className="flex items-center gap-5" aria-label="Footer secondary">
             {NAV_LINKS.slice(0, 3).map((link) => (

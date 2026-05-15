@@ -19,9 +19,11 @@ export function TrustStrip() {
             variants={fadeUp}
             className="max-w-xs font-mono text-xs uppercase tracking-[0.22em] text-text-muted"
           >
-            <span className="block text-accent">Studio principles</span>
+            <span className="block text-accent">
+              <span className="mr-2">Φ</span>Studio principles
+            </span>
             <span className="mt-2 block normal-case tracking-normal text-text-muted/80 font-sans text-sm">
-              How we approach every engagement.
+              How we approach every engagement — without exception.
             </span>
           </motion.p>
 

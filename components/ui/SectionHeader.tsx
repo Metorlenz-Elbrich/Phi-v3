@@ -3,9 +3,13 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { fadeUp, staggerContainer } from "@/lib/motion";
+import { SectionIndex } from "./SectionIndex";
 
 interface SectionHeaderProps {
-  eyebrow?: string;
+  eyebrowIndex?: string;
+  eyebrowLabel?: string;
+  /** Free-form eyebrow override (skips SectionIndex). */
+  eyebrow?: React.ReactNode;
   title: React.ReactNode;
   description?: React.ReactNode;
   align?: "left" | "center";
@@ -13,12 +17,20 @@ interface SectionHeaderProps {
 }
 
 export function SectionHeader({
+  eyebrowIndex,
+  eyebrowLabel,
   eyebrow,
   title,
   description,
   align = "left",
   className,
 }: SectionHeaderProps) {
+  const eyebrowNode =
+    eyebrow ??
+    (eyebrowIndex && eyebrowLabel ? (
+      <SectionIndex index={eyebrowIndex} label={eyebrowLabel} />
+    ) : null);
+
   return (
     <motion.div
       variants={staggerContainer}
@@ -31,10 +43,10 @@ export function SectionHeader({
         className
       )}
     >
-      {eyebrow ? (
+      {eyebrowNode ? (
         <motion.div variants={fadeUp} className="flex items-center gap-3">
-          <span className="h-px w-8 bg-accent/60" aria-hidden="true" />
-          <span className="eyebrow">{eyebrow}</span>
+          {eyebrowNode}
+          <span className="h-px w-10 bg-accent/30" aria-hidden="true" />
         </motion.div>
       ) : null}
       <motion.h2

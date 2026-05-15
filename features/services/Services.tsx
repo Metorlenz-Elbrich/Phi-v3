@@ -19,20 +19,21 @@ export function Services() {
       <div className="shell flex flex-col gap-16">
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <SectionHeader
-            eyebrow="01 — Services"
+            eyebrowIndex="01"
+            eyebrowLabel="Services"
             title={
               <>
                 A complete digital studio,{" "}
                 <span className="text-text-muted">
-                  built around engineering rigor.
+                  held to a single standard.
                 </span>
               </>
             }
-            description="From the first sketch to ongoing operation, every discipline is in-house. We accept work where we can own the outcome end-to-end."
+            description="Seven disciplines. One studio. We accept work where we can own the outcome from first sketch to ongoing operation — and where Φ-grade craft makes a measurable difference."
           />
           <div className="flex shrink-0 items-center gap-3 text-xs text-text-muted">
             <span className="font-mono uppercase tracking-[0.22em]">
-              07 disciplines
+              <span className="text-accent">Φ</span> · 07 disciplines
             </span>
             <span className="h-px w-12 bg-line" />
           </div>

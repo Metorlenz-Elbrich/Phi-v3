@@ -33,14 +33,15 @@ export function Showcase() {
 
       <div className="shell flex flex-col gap-16">
         <SectionHeader
-          eyebrow="03 — Engineering"
+          eyebrowIndex="03"
+          eyebrowLabel="Engineering"
           title={
             <>
               Engineering as a{" "}
               <span className="text-text-muted">design material.</span>
             </>
           }
-          description="We don't separate craft from infrastructure. The same care that shapes a button shapes a deployment pipeline."
+          description="We don't separate craft from infrastructure. The same proportion that shapes a button shapes a deployment pipeline — Φ from the pixel to the platform."
         />
 
         <motion.div

@@ -11,6 +11,30 @@ PhiBrain is a **premium technology engineering, digital design and cybersecurity
 
 Every line of copy on the site is written to defend that positioning.
 
+## Brand constant — Φ
+
+PhiBrain's brand is anchored on the letter **Φ** (phi) — the golden ratio, the constant of proportion, and the literal "Phi" in PhiBrain. Φ is treated as:
+
+- **A mark, not a meme.** It appears precisely, in a small set of named locations (see `DESIGN_SYSTEM.md`).
+- **A standard.** Copy explicitly references Φ as "the constant of exceptional digital craft" and "the standard we hold ourselves to." Never as a buzzword.
+- **A connector.** The brand narrative "We Design. We Build. We Secure. We Scale." is now read as `We Design Φ We Build Φ We Secure Φ We Scale` — Φ as the link between disciplines.
+
+## Duality narrative
+
+The PhiBrain brain symbol expresses a duality:
+
+- **Left hemisphere** — engineering, structure, systems, logic, precision
+- **Right hemisphere** — creativity, fluidity, adaptive thinking, innovation
+
+This is the single strongest brand signal on the site. It appears in:
+
+1. The hero headline: *"Built with structure. Designed with fluidity. Held to a single standard."*
+2. The hero duality strip: `Structure · Fluidity · Trust`.
+3. The 3D sculpture: asymmetric composition with engineering hemisphere on the left, fluid hemisphere on the right, Φ as the central anchor.
+4. The hero supporting paragraph: *"a studio where engineering precision meets design fluidity."*
+
+This is **not** AI duality (left brain = logic, right brain = creativity is a pop-psychology cliché only used here as a brand metaphor for engineering ↔ design). The site never references the brain organ, neural networks, or artificial intelligence.
+
 ## Voice
 
 | Trait | Manifestation |
@@ -20,14 +44,13 @@ Every line of copy on the site is written to defend that positioning.
 | Executive | Speaks to a buyer who has a budget and a risk appetite. |
 | Restrained | Never sells with adjectives ("powerful", "robust"). Sells with specifics. |
 | Honest | Conceptual case studies are explicitly labeled. No fake compliance badges. |
-
-The brand narrative — **"We Design. We Build. We Secure. We Scale."** — is used as rhythm, not as filler. It appears three times: hero technical accent, footer, final CTA chips.
+| Editorial | Rhythm matters. Headlines balance; eyebrows are mono; sub-copy is generous. |
 
 ## Section purpose & copy intent
 
 | Section | Reader question it answers |
 | --- | --- |
-| Hero | Is this serious? What do they actually do? |
+| Hero | Is this serious? What do they actually do? Why are they distinctive? |
 | Trust strip | What's their operating posture? |
 | Services | Can they handle my problem end-to-end? |
 | Process | Will I be in good hands? Will this be chaotic? |
@@ -35,6 +58,19 @@ The brand narrative — **"We Design. We Build. We Secure. We Scale."** — is u
 | Cybersecurity | Can I trust them with sensitive systems? |
 | Projects | Have they done anything like mine? |
 | Final CTA | What do I do next? |
+
+## Notable copy moves
+
+| Section | Distinctive line |
+| --- | --- |
+| Hero H1 | *"Built with structure. Designed with fluidity. Held to a single standard."* |
+| Hero sub | *"Φ is the constant in everything we ship."* |
+| Services | *"Seven disciplines. One studio. … where Φ-grade craft makes a measurable difference."* |
+| Process sub | *"Six disciplined phases. Each one earns the next. Φ is the constant."* |
+| Security H2 | *"Security is an architecture decision, not a checkbox."* |
+| Security doctrine | *"We don't sell badges. We sell posture." / "We model threats before we model UX." / "We assume breach. We design containment."* |
+| Final CTA | *"Let's build something exceptional."* + sub: *"built, designed and secured to a single standard."* |
+| Footer brand bar | *"The constant of exceptional digital craft."* |
 
 ## Banned vocabulary
 
@@ -51,10 +87,11 @@ Never appears anywhere on the site:
 - "Trust zones", "threat model", "blast radius", "contracts"
 - "Edge-native", "typed", "design tokens", "observability"
 - "Discipline", "rigor", "calm", "restrained"
+- "Φ", "constant", "proportion", "standard", "fluidity", "structure"
 
 ## Conceptual case study labeling
 
-The three projects in `lib/content.ts` are labeled `conceptual: true` and surfaced as a small chip on the case study card (`Conceptual`). This is intentional: until real, NDA-cleared cases are ready to publish, the studio's pattern shape is shown honestly.
+The three projects in `lib/content.ts` are labeled `conceptual: true` and surfaced as a small chip on the case study card (`Conceptual`). The section header also states this honestly: *"The cases below are conceptual presentations of real engagement shapes — patterns we've shipped, with names abstracted."*
 
 ## Source of truth
 
@@ -69,7 +106,7 @@ All copy is in **`lib/content.ts`**:
 - `SHOWCASE_PILLARS`
 - `BRAND_NARRATIVE`
 
-Changing copy means editing one typed file. No copy lives inside section JSX except for connector text ("Discuss this engagement", section descriptions). Move connector text to `content.ts` if a CMS comes online.
+Changing copy means editing one typed file.
 
 ## CMS migration path
 

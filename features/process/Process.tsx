@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AnimatePresence, motion } from "framer-motion";
 import { PROCESS_STEPS } from "@/lib/content";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { PhiMark } from "@/components/ui/PhiMark";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -61,12 +62,10 @@ export function Process() {
     return () => ctx.revert();
   }, []);
 
+  const currentStep = PROCESS_STEPS[active]!;
+
   return (
-    <section
-      ref={sectionRef}
-      id="process"
-      className="relative bg-ink-900"
-    >
+    <section ref={sectionRef} id="process" className="relative bg-ink-900">
       <div ref={pinRef} className="relative min-h-screen overflow-hidden">
         <div
           className="pointer-events-none absolute inset-0 -z-10"
@@ -79,17 +78,21 @@ export function Process() {
         <div className="shell flex h-screen flex-col py-24">
           <header className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
             <SectionHeader
-              eyebrow="02 — Process"
+              eyebrowIndex="02"
+              eyebrowLabel="Process"
               title={
                 <>
                   How a serious product{" "}
                   <span className="text-text-muted">comes together.</span>
                 </>
               }
-              description="Six disciplined phases. Each one earns the next."
+              description="Six disciplined phases. Each one earns the next. Φ is the constant."
             />
             <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.22em] text-text-muted">
-              <span>{String(active + 1).padStart(2, "0")}</span>
+              <PhiMark size="md" className="text-accent" decorative />
+              <span className="text-accent tabular-nums">
+                .{String(active + 1).padStart(2, "0")}
+              </span>
               <span className="text-text-muted/50">/</span>
               <span>{String(PROCESS_STEPS.length).padStart(2, "0")}</span>
             </div>
@@ -102,6 +105,18 @@ export function Process() {
               className="absolute left-0 top-0 h-px w-full origin-left bg-gradient-to-r from-accent via-accent-soft to-accent"
               style={{ transform: "scaleX(0)" }}
             />
+            {/* Phase tick markers */}
+            <div className="pointer-events-none absolute inset-x-0 -top-1 flex justify-between">
+              {PROCESS_STEPS.map((step, i) => (
+                <span
+                  key={step.id}
+                  className={`block h-2 w-px transition-colors duration-500 ${
+                    i <= active ? "bg-accent" : "bg-line"
+                  }`}
+                  aria-hidden="true"
+                />
+              ))}
+            </div>
           </div>
 
           <div className="mt-12 grid flex-1 grid-cols-1 gap-12 md:grid-cols-12 md:gap-10">
@@ -118,7 +133,7 @@ export function Process() {
                       className="group relative flex w-full items-center gap-4 rounded-lg px-3 py-3 text-left transition-colors duration-300"
                     >
                       <span
-                        className={`font-mono text-xs tabular-nums transition-colors duration-300 ${
+                        className={`font-mono text-[11px] tabular-nums transition-colors duration-300 ${
                           isActive
                             ? "text-accent"
                             : isPast
@@ -126,6 +141,7 @@ export function Process() {
                             : "text-text-muted/60"
                         }`}
                       >
+                        <span className="opacity-70">Φ.</span>
                         {step.index}
                       </span>
                       <span
@@ -152,6 +168,22 @@ export function Process() {
 
             {/* Active step display */}
             <div className="md:col-span-8 relative flex items-center">
+              {/* Massive Φ.0X watermark behind the active step */}
+              <div
+                className="pointer-events-none absolute right-0 top-1/2 -z-10 flex -translate-y-1/2 select-none items-baseline gap-2 leading-none"
+                aria-hidden="true"
+              >
+                <PhiMark
+                  size="display"
+                  weight="light"
+                  decorative
+                  className="text-text-primary/[0.03]"
+                />
+                <span className="font-display text-[clamp(6rem,14vw,12rem)] font-light leading-none text-text-primary/[0.04] tabular-nums">
+                  .{currentStep.index}
+                </span>
+              </div>
+
               <AnimatePresence mode="wait">
                 <motion.div
                   key={active}
@@ -159,25 +191,26 @@ export function Process() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -24 }}
                   transition={{ duration: 0.7, ease: EASE }}
-                  className="flex w-full flex-col gap-8"
+                  className="relative z-10 flex w-full flex-col gap-8"
                 >
                   <div className="flex items-center gap-5">
-                    <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-accent">
-                      Phase {PROCESS_STEPS[active]!.index}
+                    <span className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-accent">
+                      Phase <PhiMark size="sm" className="text-accent" decorative />
+                      .{currentStep.index}
                     </span>
                     <span className="h-px flex-1 bg-line" />
                   </div>
 
                   <h3 className="font-display text-display-xl text-text-primary text-balance">
-                    {PROCESS_STEPS[active]!.title}.
+                    {currentStep.title}.
                   </h3>
 
                   <p className="max-w-2xl text-xl leading-relaxed text-text-muted text-pretty">
-                    {PROCESS_STEPS[active]!.summary}
+                    {currentStep.summary}
                   </p>
 
                   <ul className="grid max-w-2xl grid-cols-1 gap-2 sm:grid-cols-3">
-                    {PROCESS_STEPS[active]!.details.map((detail) => (
+                    {currentStep.details.map((detail) => (
                       <li
                         key={detail}
                         className="flex items-center gap-2 rounded-lg border border-line bg-white/[0.02] px-3 py-2 text-sm text-text-primary/90"
@@ -191,11 +224,13 @@ export function Process() {
                   {/* Phase glyph */}
                   <div className="mt-2 flex items-center gap-4 text-text-muted">
                     {(() => {
-                      const Icon = PROCESS_STEPS[active]!.icon;
-                      return <Icon size={28} strokeWidth={1.25} className="text-accent/80" />;
+                      const Icon = currentStep.icon;
+                      return (
+                        <Icon size={28} strokeWidth={1.25} className="text-accent/80" />
+                      );
                     })()}
                     <span className="font-mono text-xs uppercase tracking-[0.22em]">
-                      Discipline · {PROCESS_STEPS[active]!.id}
+                      Discipline · {currentStep.id}
                     </span>
                   </div>
                 </motion.div>

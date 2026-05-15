@@ -2,127 +2,312 @@
 
 import { Suspense, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment, Float } from "@react-three/drei";
+import { Environment } from "@react-three/drei";
 import * as THREE from "three";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 /* -------------------------------------------------------------------------- */
-/*                              Sculpture Geometry                            */
+/*                                Brand colors                                */
 /* -------------------------------------------------------------------------- */
 
 const ACCENT = new THREE.Color("#00D9FF");
 const ACCENT_SOFT = new THREE.Color("#39E6FF");
 const INK = new THREE.Color("#060B14");
 
-function CoreShell() {
-  const ref = useRef<THREE.Mesh>(null);
+/* -------------------------------------------------------------------------- */
+/*                  LEFT — Engineering hemisphere (structure)                 */
+/* -------------------------------------------------------------------------- */
+
+function EngineeringHemisphere() {
+  const groupRef = useRef<THREE.Group>(null);
   const reduced = useReducedMotion();
 
-  useFrame(({ pointer, clock }, delta) => {
-    if (!ref.current) return;
-    const t = clock.elapsedTime;
-    const targetX = pointer.y * 0.25 + Math.sin(t * 0.35) * 0.08;
-    const targetY = pointer.x * 0.4 + t * (reduced ? 0 : 0.06);
-    ref.current.rotation.x += (targetX - ref.current.rotation.x) * 0.04;
-    ref.current.rotation.y += (targetY - ref.current.rotation.y) * 0.04;
-  });
+  // Sparse 3D lattice — rigid cubic ordering, slightly culled for visual rhythm.
+  const lattice = useMemo(() => {
+    const positions: [number, number, number][] = [];
+    // Deterministic pseudo-random so the layout is stable across renders.
+    let seed = 17;
+    const rand = () => {
+      seed = (seed * 9301 + 49297) % 233280;
+      return seed / 233280;
+    };
+    const range = 1.0;
+    const step = 0.42;
+    for (let x = -range; x <= range + 0.001; x += step) {
+      for (let y = -range; y <= range + 0.001; y += step) {
+        for (let z = -range; z <= range + 0.001; z += step) {
+          if (rand() > 0.42) continue;
+          positions.push([x, y, z]);
+        }
+      }
+    }
+    return positions;
+  }, []);
 
-  return (
-    <mesh ref={ref}>
-      <icosahedronGeometry args={[1, 1]} />
-      <meshStandardMaterial
-        color={INK}
-        metalness={0.85}
-        roughness={0.28}
-        emissive={ACCENT}
-        emissiveIntensity={0.04}
-      />
-    </mesh>
-  );
-}
-
-function WireShell({ radius, detail = 1, opacity = 0.5 }: { radius: number; detail?: number; opacity?: number }) {
-  const ref = useRef<THREE.LineSegments>(null);
-  const reduced = useReducedMotion();
-
-  const geom = useMemo(() => {
-    const base = new THREE.IcosahedronGeometry(radius, detail);
+  // Focal wireframe icosahedron — the "structured intelligence" mark.
+  const icoEdges = useMemo(() => {
+    const base = new THREE.IcosahedronGeometry(0.95, 0);
     return new THREE.EdgesGeometry(base, 1);
-  }, [radius, detail]);
+  }, []);
 
-  useFrame(({ pointer }, delta) => {
-    if (!ref.current) return;
-    const speed = reduced ? 0 : 0.08;
-    ref.current.rotation.y += delta * speed;
-    ref.current.rotation.x += delta * speed * 0.6;
-    const px = pointer.x * 0.3;
-    const py = -pointer.y * 0.3;
-    ref.current.rotation.z += (px - ref.current.rotation.z) * 0.02;
-    ref.current.position.y += (py * 0.2 - ref.current.position.y) * 0.02;
-  });
+  // Inner detail icosahedron
+  const innerIcoEdges = useMemo(() => {
+    const base = new THREE.IcosahedronGeometry(0.55, 1);
+    return new THREE.EdgesGeometry(base, 1);
+  }, []);
 
-  return (
-    <lineSegments ref={ref} geometry={geom}>
-      <lineBasicMaterial
-        color={ACCENT}
-        transparent
-        opacity={opacity}
-        toneMapped={false}
-      />
-    </lineSegments>
-  );
-}
-
-function OrbitRing({ radius, tilt, speed, opacity = 0.35 }: { radius: number; tilt: [number, number, number]; speed: number; opacity?: number }) {
-  const ref = useRef<THREE.Group>(null);
-  const reduced = useReducedMotion();
-
-  const geom = useMemo(() => new THREE.TorusGeometry(radius, 0.0035, 8, 256), [radius]);
+  // Connection rays from origin to a few lattice points (engineering veins).
+  const veinsGeom = useMemo(() => {
+    const verts: number[] = [];
+    lattice.slice(0, 8).forEach(([x, y, z]) => {
+      verts.push(0, 0, 0, x, y, z);
+    });
+    const geom = new THREE.BufferGeometry();
+    geom.setAttribute("position", new THREE.Float32BufferAttribute(verts, 3));
+    return geom;
+  }, [lattice]);
 
   useFrame((_, delta) => {
-    if (!ref.current) return;
-    ref.current.rotation.z += delta * (reduced ? 0 : speed);
+    if (!groupRef.current) return;
+    const s = reduced ? 0 : 1;
+    groupRef.current.rotation.y += delta * 0.06 * s;
+    groupRef.current.rotation.x += delta * 0.018 * s;
   });
 
   return (
-    <group ref={ref} rotation={tilt}>
-      <mesh geometry={geom}>
-        <meshBasicMaterial color={ACCENT_SOFT} transparent opacity={opacity} toneMapped={false} />
+    <group ref={groupRef} position={[-1.7, 0, 0]}>
+      <lineSegments geometry={icoEdges}>
+        <lineBasicMaterial
+          color={ACCENT}
+          transparent
+          opacity={0.78}
+          toneMapped={false}
+        />
+      </lineSegments>
+
+      <lineSegments geometry={innerIcoEdges}>
+        <lineBasicMaterial
+          color={ACCENT}
+          transparent
+          opacity={0.32}
+          toneMapped={false}
+        />
+      </lineSegments>
+
+      <lineSegments geometry={veinsGeom}>
+        <lineBasicMaterial
+          color={ACCENT}
+          transparent
+          opacity={0.16}
+          toneMapped={false}
+        />
+      </lineSegments>
+
+      {lattice.map((p, i) => (
+        <mesh key={i} position={p}>
+          <boxGeometry args={[0.085, 0.085, 0.085]} />
+          <meshBasicMaterial
+            color={ACCENT_SOFT}
+            wireframe
+            transparent
+            opacity={0.55}
+            toneMapped={false}
+          />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*                     CENTER — Φ anchor (brand constant)                     */
+/* -------------------------------------------------------------------------- */
+
+function PhiAnchor() {
+  const ringRef = useRef<THREE.Mesh>(null);
+  const rodMatRef = useRef<THREE.MeshBasicMaterial>(null);
+  const haloRef = useRef<THREE.Mesh>(null);
+  const reduced = useReducedMotion();
+
+  useFrame(({ clock }, delta) => {
+    const t = clock.elapsedTime;
+
+    if (rodMatRef.current) {
+      // Subtle breathing pulse on the rod.
+      rodMatRef.current.opacity = 0.72 + Math.sin(t * 0.9) * 0.18;
+    }
+
+    if (ringRef.current && !reduced) {
+      ringRef.current.rotation.y += delta * 0.05;
+    }
+
+    if (haloRef.current) {
+      const s = 1 + Math.sin(t * 0.6) * 0.04;
+      haloRef.current.scale.set(s, s, s);
+    }
+  });
+
+  return (
+    <group>
+      {/* Vertical rod — Φ stem */}
+      <mesh>
+        <cylinderGeometry args={[0.02, 0.02, 2.7, 16]} />
+        <meshBasicMaterial
+          ref={rodMatRef}
+          color={ACCENT_SOFT}
+          transparent
+          opacity={0.85}
+          toneMapped={false}
+        />
+      </mesh>
+
+      {/* Horizontal ring — Φ loop */}
+      <mesh ref={ringRef} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.72, 0.014, 16, 96]} />
+        <meshBasicMaterial
+          color={ACCENT}
+          transparent
+          opacity={0.85}
+          toneMapped={false}
+        />
+      </mesh>
+
+      {/* Halo */}
+      <mesh ref={haloRef}>
+        <ringGeometry args={[0.74, 0.80, 96]} />
+        <meshBasicMaterial
+          color={ACCENT}
+          transparent
+          opacity={0.18}
+          side={THREE.DoubleSide}
+          toneMapped={false}
+        />
+      </mesh>
+
+      {/* End caps */}
+      <mesh position={[0, 1.35, 0]}>
+        <sphereGeometry args={[0.05, 16, 16]} />
+        <meshBasicMaterial color={ACCENT_SOFT} toneMapped={false} />
+      </mesh>
+      <mesh position={[0, -1.35, 0]}>
+        <sphereGeometry args={[0.05, 16, 16]} />
+        <meshBasicMaterial color={ACCENT_SOFT} toneMapped={false} />
+      </mesh>
+
+      {/* Origin core */}
+      <mesh>
+        <sphereGeometry args={[0.07, 24, 24]} />
+        <meshStandardMaterial
+          color={INK}
+          metalness={0.9}
+          roughness={0.25}
+          emissive={ACCENT}
+          emissiveIntensity={0.5}
+        />
       </mesh>
     </group>
   );
 }
 
-function Satellites() {
+/* -------------------------------------------------------------------------- */
+/*                      RIGHT — Fluid hemisphere (design)                     */
+/* -------------------------------------------------------------------------- */
+
+function FluidHemisphere() {
+  const groupRef = useRef<THREE.Group>(null);
+  const knotRef = useRef<THREE.Mesh>(null);
   const reduced = useReducedMotion();
-  const positions = useMemo(() => {
-    const pts: [number, number, number][] = [];
-    const count = 18;
-    for (let i = 0; i < count; i++) {
-      const theta = (i / count) * Math.PI * 2;
-      const phi = (i / count) * Math.PI;
-      const r = 1.85 + Math.sin(i * 1.3) * 0.25;
-      pts.push([
-        Math.cos(theta) * r,
-        Math.cos(phi + 0.6) * 0.9,
-        Math.sin(theta) * r,
-      ]);
+
+  // Sweeping curve — the fluid counterpart to engineering's lattice.
+  const curveTube = useMemo(() => {
+    const pts: THREE.Vector3[] = [];
+    const segs = 14;
+    for (let i = 0; i <= segs; i++) {
+      const t = i / segs;
+      const a = t * Math.PI * 2.4;
+      pts.push(
+        new THREE.Vector3(
+          Math.cos(a) * 1.05,
+          Math.sin(a * 1.4) * 0.7,
+          Math.sin(a) * 1.05
+        )
+      );
     }
-    return pts;
+    const curve = new THREE.CatmullRomCurve3(pts, false, "catmullrom", 0.55);
+    return new THREE.TubeGeometry(curve, 220, 0.014, 12, false);
   }, []);
 
-  const groupRef = useRef<THREE.Group>(null);
+  // Particle constellation orbiting around the form.
+  const particles = useMemo(() => {
+    const out: [number, number, number][] = [];
+    const count = 22;
+    let seed = 73;
+    const rand = () => {
+      seed = (seed * 9301 + 49297) % 233280;
+      return seed / 233280;
+    };
+    for (let i = 0; i < count; i++) {
+      const phi = rand() * Math.PI * 2;
+      const r = 1.15 + rand() * 0.45;
+      const y = (rand() - 0.5) * 1.4;
+      out.push([Math.cos(phi) * r, y, Math.sin(phi) * r]);
+    }
+    return out;
+  }, []);
 
-  useFrame((_, delta) => {
+  useFrame(({ clock }, delta) => {
     if (!groupRef.current) return;
-    groupRef.current.rotation.y += delta * (reduced ? 0 : 0.04);
+    const s = reduced ? 0 : 1;
+    groupRef.current.rotation.y -= delta * 0.045 * s;
+    if (knotRef.current) {
+      knotRef.current.rotation.x += delta * 0.06 * s;
+      knotRef.current.rotation.z += delta * 0.035 * s;
+    }
+    if (!reduced) {
+      groupRef.current.position.y =
+        Math.sin(clock.elapsedTime * 0.7) * 0.06;
+    }
   });
 
   return (
-    <group ref={groupRef}>
-      {positions.map((p, i) => (
+    <group ref={groupRef} position={[1.7, 0, 0]}>
+      {/* Fluid torus knot — the sculpted creative form */}
+      <mesh ref={knotRef}>
+        <torusKnotGeometry args={[0.72, 0.055, 256, 18, 2, 3]} />
+        <meshStandardMaterial
+          color={INK}
+          metalness={0.7}
+          roughness={0.22}
+          emissive={ACCENT}
+          emissiveIntensity={0.18}
+        />
+      </mesh>
+
+      {/* Curve ribbon weaving around */}
+      <mesh geometry={curveTube}>
+        <meshBasicMaterial
+          color={ACCENT_SOFT}
+          transparent
+          opacity={0.55}
+          toneMapped={false}
+        />
+      </mesh>
+
+      {/* Secondary thin ring at an angle */}
+      <mesh rotation={[Math.PI / 2.4, 0.3, 0]}>
+        <torusGeometry args={[1.25, 0.004, 8, 128]} />
+        <meshBasicMaterial
+          color={ACCENT}
+          transparent
+          opacity={0.35}
+          toneMapped={false}
+        />
+      </mesh>
+
+      {/* Constellation */}
+      {particles.map((p, i) => (
         <mesh key={i} position={p}>
-          <octahedronGeometry args={[0.04, 0]} />
+          <sphereGeometry args={[0.022, 8, 8]} />
           <meshBasicMaterial color={ACCENT_SOFT} toneMapped={false} />
         </mesh>
       ))}
@@ -130,79 +315,58 @@ function Satellites() {
   );
 }
 
-function ConnectionLines() {
+/* -------------------------------------------------------------------------- */
+/*                                  Scene root                                */
+/* -------------------------------------------------------------------------- */
+
+function Scene() {
+  const root = useRef<THREE.Group>(null);
   const reduced = useReducedMotion();
-  const ref = useRef<THREE.LineSegments>(null);
 
-  const geometry = useMemo(() => {
-    const pts: number[] = [];
-    const count = 8;
-    for (let i = 0; i < count; i++) {
-      const theta = (i / count) * Math.PI * 2;
-      const r = 1.6;
-      pts.push(0, 0, 0, Math.cos(theta) * r, Math.sin(theta * 1.7) * 0.6, Math.sin(theta) * r);
+  useFrame(({ pointer, clock }) => {
+    if (!root.current) return;
+    const targetX = pointer.y * 0.16;
+    const targetY = pointer.x * 0.28;
+    root.current.rotation.x += (targetX - root.current.rotation.x) * 0.04;
+    root.current.rotation.y += (targetY - root.current.rotation.y) * 0.04;
+    if (!reduced) {
+      root.current.position.y = Math.sin(clock.elapsedTime * 0.45) * 0.06;
     }
-    const geom = new THREE.BufferGeometry();
-    geom.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
-    return geom;
-  }, []);
-
-  useFrame((_, delta) => {
-    if (!ref.current) return;
-    ref.current.rotation.y -= delta * (reduced ? 0 : 0.05);
   });
 
   return (
-    <lineSegments ref={ref} geometry={geometry}>
-      <lineBasicMaterial color={ACCENT} transparent opacity={0.18} toneMapped={false} />
-    </lineSegments>
-  );
-}
-
-function Scene() {
-  const reduced = useReducedMotion();
-  return (
     <>
-      <ambientLight intensity={0.35} />
-      <directionalLight position={[3, 4, 5]} intensity={1.2} color={ACCENT_SOFT} />
-      <directionalLight position={[-4, -2, -3]} intensity={0.6} color={ACCENT} />
-      <pointLight position={[0, 0, 0]} intensity={1.4} color={ACCENT} distance={3} decay={2} />
+      <ambientLight intensity={0.32} />
+      <directionalLight position={[3.5, 4, 5]} intensity={1.1} color={ACCENT_SOFT} />
+      <directionalLight position={[-4, -1.5, -3]} intensity={0.55} color={ACCENT} />
+      <pointLight position={[0, 0, 0.5]} intensity={1.6} color={ACCENT} distance={3} decay={2} />
 
-      <Float
-        speed={reduced ? 0 : 0.9}
-        rotationIntensity={reduced ? 0 : 0.25}
-        floatIntensity={reduced ? 0 : 0.6}
-      >
-        <group scale={1.15}>
-          <CoreShell />
-          <WireShell radius={1.18} detail={1} opacity={0.55} />
-          <WireShell radius={1.45} detail={0} opacity={0.28} />
-          <ConnectionLines />
-          <Satellites />
-        </group>
-      </Float>
-
-      <OrbitRing radius={2.1} tilt={[Math.PI / 2.3, 0.4, 0]} speed={0.06} opacity={0.45} />
-      <OrbitRing radius={2.45} tilt={[Math.PI / 2.6, -0.3, 0.4]} speed={-0.04} opacity={0.28} />
-      <OrbitRing radius={2.8} tilt={[Math.PI / 2.1, 0.2, -0.3]} speed={0.025} opacity={0.18} />
+      <group ref={root}>
+        <EngineeringHemisphere />
+        <PhiAnchor />
+        <FluidHemisphere />
+      </group>
 
       <Suspense fallback={null}>
-        <Environment preset="warehouse" environmentIntensity={0.35} />
+        <Environment preset="warehouse" environmentIntensity={0.32} />
       </Suspense>
     </>
   );
 }
 
 /* -------------------------------------------------------------------------- */
-/*                                  Wrapper                                   */
+/*                                   Wrapper                                  */
 /* -------------------------------------------------------------------------- */
 
 export function Sculpture() {
   return (
-    <div className="relative aspect-square w-full max-w-[640px]">
-      <div className="pointer-events-none absolute inset-[-10%] bg-radial-spot blur-3xl" aria-hidden="true" />
+    <div className="relative aspect-square w-full max-w-[680px]">
+      <div
+        className="pointer-events-none absolute inset-[-12%] bg-radial-spot blur-3xl"
+        aria-hidden="true"
+      />
       <Canvas
-        camera={{ position: [0, 0.4, 4.6], fov: 38 }}
+        camera={{ position: [0, 0.25, 5.2], fov: 42 }}
         dpr={[1, 1.6]}
         gl={{
           antialias: true,
