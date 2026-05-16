@@ -1,18 +1,15 @@
 import type { LucideIcon } from "lucide-react";
 import {
-  Globe,
-  AppWindow,
-  Smartphone,
-  Layers,
   Sparkles,
+  Code2,
   ShieldCheck,
-  Workflow,
+  TrendingUp,
   Compass,
   PenTool,
   Network,
   Hammer,
   Lock,
-  TrendingUp,
+  Workflow,
 } from "lucide-react";
 
 export const NAV_LINKS = [
@@ -23,80 +20,116 @@ export const NAV_LINKS = [
   { href: "#contact", label: "Contact" },
 ] as const;
 
-export interface Service {
-  id: string;
-  title: string;
-  description: string;
-  capabilities: string[];
-  icon: LucideIcon;
-  index: string;
+/* -------------------------------------------------------------------------- */
+/*                     Pillars — the four-discipline studio                   */
+/* -------------------------------------------------------------------------- */
+
+export interface PillarService {
+  name: string;
+  detail: string;
 }
 
-export const SERVICES: Service[] = [
-  {
-    id: "websites",
-    index: "01",
-    title: "Website Development",
-    description:
-      "Marketing surfaces engineered like products. Editorial typography, frame-perfect motion, instrumented performance.",
-    capabilities: ["Next.js / React", "Headless CMS", "Edge rendering", "Conversion analytics"],
-    icon: Globe,
-  },
-  {
-    id: "webapps",
-    index: "02",
-    title: "Web Applications",
-    description:
-      "Complex application engineering. Typed contracts, resilient data flows, calm interfaces under real load.",
-    capabilities: ["TypeScript", "Realtime", "Auth & RBAC", "Observability"],
-    icon: AppWindow,
-  },
-  {
-    id: "mobile",
-    index: "03",
-    title: "Mobile Applications",
-    description:
-      "Native-class mobile experiences. Smooth at 120Hz, designed around platform conventions, shipped with discipline.",
-    capabilities: ["React Native", "Native modules", "App Store / Play", "Offline-first"],
-    icon: Smartphone,
-  },
-  {
-    id: "saas",
-    index: "04",
-    title: "SaaS Platforms",
-    description:
-      "Multi-tenant platforms built to scale: billing, permissions, audit trails, predictable infrastructure.",
-    capabilities: ["Multi-tenant", "Billing & metering", "Admin tooling", "Scalable infra"],
-    icon: Layers,
-  },
+export interface Pillar {
+  id: string;
+  index: string;
+  word: string;
+  headline: string;
+  body: string;
+  services: PillarService[];
+  capabilities: string[];
+  icon: LucideIcon;
+}
+
+export const PILLARS: Pillar[] = [
   {
     id: "design",
-    index: "05",
-    title: "Branding & UI/UX",
-    description:
-      "Identity systems and product design that ages well. Type, color, motion and component grammar — treated as engineering.",
-    capabilities: ["Brand systems", "Product design", "Design tokens", "Motion language"],
+    index: "01",
+    word: "Design",
+    headline: "Brand identity. Product design. Motion language.",
+    body: "Identity systems and product design treated as engineering — type, color, motion and component grammar shipped as code that ages well.",
+    services: [
+      {
+        name: "Branding & Visual Identity",
+        detail: "Identity systems with durable visual logic.",
+      },
+      {
+        name: "Product Design (UI/UX)",
+        detail: "Interactions designed at the system level.",
+      },
+    ],
+    capabilities: ["Brand systems", "Design tokens", "Component grammar", "Motion language"],
     icon: Sparkles,
   },
   {
-    id: "security",
-    index: "06",
-    title: "Cybersecurity",
-    description:
-      "Security engineering integrated from architecture to deployment. Hardening, audits, advisory — without theater.",
-    capabilities: ["Audits", "Hardening", "Secure architecture", "Advisory"],
+    id: "build",
+    index: "02",
+    word: "Build",
+    headline: "Websites. Web apps. Mobile. SaaS.",
+    body: "From editorial marketing surfaces to multi-tenant platforms — typed end-to-end, observable, shipped with discipline.",
+    services: [
+      {
+        name: "Website Development",
+        detail: "Marketing surfaces engineered like products.",
+      },
+      {
+        name: "Web Applications",
+        detail: "Complex apps with typed contracts and resilient data flows.",
+      },
+      {
+        name: "Mobile Applications",
+        detail: "Native-class iOS and Android — smooth at 120Hz.",
+      },
+      {
+        name: "SaaS Platforms",
+        detail: "Multi-tenant systems built for billing, RBAC and scale.",
+      },
+    ],
+    capabilities: ["Next.js / React", "TypeScript", "React Native", "Edge-native", "Realtime", "Multi-tenant"],
+    icon: Code2,
+  },
+  {
+    id: "secure",
+    index: "03",
+    word: "Secure",
+    headline: "Architecture-led security.",
+    body: "Trust zones, threat models, hardening, audits — woven into delivery, never bolted on at the end.",
+    services: [
+      {
+        name: "Cybersecurity Engineering",
+        detail: "Hardening, secure architecture, security advisory.",
+      },
+      {
+        name: "Security Audits",
+        detail: "Structured reviews with prioritized remediation.",
+      },
+    ],
+    capabilities: ["Threat modeling", "Hardening", "Audit & advisory", "Secure architecture"],
     icon: ShieldCheck,
   },
   {
-    id: "transformation",
-    index: "07",
-    title: "Digital Transformation",
-    description:
-      "Modernizing how businesses operate digitally. Replatforming, internal tooling, scalable systems — done quietly.",
+    id: "scale",
+    index: "04",
+    word: "Scale",
+    headline: "Digital transformation. Internal tooling.",
+    body: "Modernizing how businesses operate digitally — replatforming, internal tooling, scalable systems shipped quietly.",
+    services: [
+      {
+        name: "Digital Transformation",
+        detail: "Replatforming, modernization, scalable systems.",
+      },
+      {
+        name: "Internal Tools & Operations",
+        detail: "Tooling that makes teams measurably faster.",
+      },
+    ],
     capabilities: ["Replatforming", "Internal tools", "Process automation", "Roadmap"],
     icon: TrendingUp,
   },
 ];
+
+/* -------------------------------------------------------------------------- */
+/*                                Process steps                               */
+/* -------------------------------------------------------------------------- */
 
 export interface ProcessStep {
   id: string;
@@ -114,11 +147,7 @@ export const PROCESS_STEPS: ProcessStep[] = [
     title: "Discover",
     summary: "We make the brief honest.",
     icon: Compass,
-    details: [
-      "Stakeholder interviews",
-      "Constraint mapping",
-      "Outcome definition",
-    ],
+    details: ["Stakeholder interviews", "Constraint mapping", "Outcome definition"],
   },
   {
     id: "design",
@@ -126,11 +155,7 @@ export const PROCESS_STEPS: ProcessStep[] = [
     title: "Design",
     summary: "Identity and product language as one system.",
     icon: PenTool,
-    details: [
-      "Brand & visual system",
-      "Interaction model",
-      "Component grammar",
-    ],
+    details: ["Brand & visual system", "Interaction model", "Component grammar"],
   },
   {
     id: "architect",
@@ -138,11 +163,7 @@ export const PROCESS_STEPS: ProcessStep[] = [
     title: "Architect",
     summary: "Boundaries, contracts, data shape — drawn before we build.",
     icon: Network,
-    details: [
-      "Domain modeling",
-      "API contracts",
-      "Infrastructure shape",
-    ],
+    details: ["Domain modeling", "API contracts", "Infrastructure shape"],
   },
   {
     id: "build",
@@ -150,11 +171,7 @@ export const PROCESS_STEPS: ProcessStep[] = [
     title: "Build",
     summary: "Engineering with taste. Small iterations, visible progress.",
     icon: Hammer,
-    details: [
-      "Typed implementation",
-      "Code review discipline",
-      "Continuous delivery",
-    ],
+    details: ["Typed implementation", "Code review discipline", "Continuous delivery"],
   },
   {
     id: "secure",
@@ -162,11 +179,7 @@ export const PROCESS_STEPS: ProcessStep[] = [
     title: "Secure",
     summary: "Security is woven in, not bolted on.",
     icon: Lock,
-    details: [
-      "Threat modeling",
-      "Hardening pass",
-      "Audit & remediation",
-    ],
+    details: ["Threat modeling", "Hardening pass", "Audit & remediation"],
   },
   {
     id: "scale",
@@ -174,13 +187,13 @@ export const PROCESS_STEPS: ProcessStep[] = [
     title: "Scale",
     summary: "Operate, observe, evolve.",
     icon: Workflow,
-    details: [
-      "Performance budgets",
-      "Observability",
-      "Roadmap stewardship",
-    ],
+    details: ["Performance budgets", "Observability", "Roadmap stewardship"],
   },
 ];
+
+/* -------------------------------------------------------------------------- */
+/*                              Trust principles                              */
+/* -------------------------------------------------------------------------- */
 
 export interface TrustItem {
   label: string;
@@ -195,6 +208,10 @@ export const TRUST_ITEMS: TrustItem[] = [
   { label: "Product-grade execution", detail: "Shipped, measured, evolved" },
   { label: "Design + engineering synergy", detail: "One team, one outcome" },
 ];
+
+/* -------------------------------------------------------------------------- */
+/*                              Projects (cases)                              */
+/* -------------------------------------------------------------------------- */
 
 export interface Project {
   id: string;
@@ -243,6 +260,10 @@ export const PROJECTS: Project[] = [
   },
 ];
 
+/* -------------------------------------------------------------------------- */
+/*                          Security & Showcase content                       */
+/* -------------------------------------------------------------------------- */
+
 export interface SecurityCapability {
   title: string;
   description: string;
@@ -251,23 +272,19 @@ export interface SecurityCapability {
 export const SECURITY_CAPABILITIES: SecurityCapability[] = [
   {
     title: "Secure architecture",
-    description:
-      "Boundaries, trust zones and data flows defined before a line of code is written.",
+    description: "Boundaries, trust zones and data flows defined before a line of code is written.",
   },
   {
     title: "Hardening engagements",
-    description:
-      "Targeted hardening of authentication, session handling, supply chain and infrastructure.",
+    description: "Targeted hardening of authentication, session handling, supply chain and infrastructure.",
   },
   {
     title: "Audits & advisory",
-    description:
-      "Structured reviews of running systems with actionable, prioritized remediation paths.",
+    description: "Structured reviews of running systems with actionable, prioritized remediation paths.",
   },
   {
     title: "Continuous posture",
-    description:
-      "Security woven into delivery — code review, dependency hygiene, observability.",
+    description: "Security woven into delivery — code review, dependency hygiene, observability.",
   },
 ];
 
@@ -311,3 +328,4 @@ export const SHOWCASE_PILLARS: ShowcasePillar[] = [
 ];
 
 export const BRAND_NARRATIVE = ["Design.", "Build.", "Secure.", "Scale."] as const;
+export const STUDIO_EMAIL = "studio@phibrain.io" as const;

@@ -2,12 +2,11 @@
 
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
-import { ArrowRight, ShieldCheck, Code2, Sparkles } from "lucide-react";
+import { ShieldCheck, Code2, Sparkles } from "lucide-react";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { ButtonLink } from "@/components/ui/Button";
 import { PhiMark } from "@/components/ui/PhiMark";
 import { SculptureFallback } from "./SculptureFallback";
-import { BRAND_NARRATIVE } from "@/lib/content";
 
 const Sculpture = dynamic(() => import("./Sculpture").then((m) => m.Sculpture), {
   ssr: false,
@@ -16,10 +15,10 @@ const Sculpture = dynamic(() => import("./Sculpture").then((m) => m.Sculpture), 
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const HERO_DUALITY = [
-  { icon: Code2, label: "Structure", side: "Engineering" },
-  { icon: Sparkles, label: "Fluidity", side: "Design" },
-  { icon: ShieldCheck, label: "Trust", side: "Security" },
+const DISCIPLINES = [
+  { icon: Code2, label: "Engineering", note: "Structure" },
+  { icon: Sparkles, label: "Design", note: "Fluidity" },
+  { icon: ShieldCheck, label: "Security", note: "Trust" },
 ] as const;
 
 export function Hero() {
@@ -51,7 +50,7 @@ export function Hero() {
         />
       </div>
 
-      {/* Editorial corner mark — top-right studio stamp */}
+      {/* Editorial corner mark — top-right studio stamp (Φ-free for restraint) */}
       <div className="shell relative">
         <motion.div
           initial={{ opacity: 0 }}
@@ -59,7 +58,7 @@ export function Hero() {
           transition={{ duration: 0.9, ease: EASE, delay: 0.3 }}
           className="pointer-events-none absolute right-0 top-[-12px] hidden flex-col items-end gap-1 font-mono text-[10px] uppercase tracking-[0.22em] text-text-muted md:flex"
         >
-          <span className="text-accent">Φ — Studio</span>
+          <span className="text-text-primary/80">PhiBrain · Studio</span>
           <span>Engineering · Design · Cybersecurity</span>
           <span className="text-text-muted/60">MMXXVI · Worldwide</span>
         </motion.div>
@@ -78,8 +77,6 @@ export function Hero() {
               className="text-accent translate-y-[1px]"
               decorative
             />
-            <span className="h-3 w-px bg-line" aria-hidden="true" />
-            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_12px_2px_rgba(0,217,255,0.7)] animate-breathe-glow" />
             <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted">
               Studio · Engineering · Design · Cybersecurity
             </span>
@@ -132,12 +129,12 @@ export function Hero() {
             transition={{ duration: 0.7, ease: EASE, delay: 0.5 }}
             className="max-w-xl text-lg leading-relaxed text-text-muted text-pretty"
           >
-            PhiBrain is a studio where engineering precision meets design
-            fluidity. We craft websites, web and mobile applications, SaaS
-            platforms — secured at every layer, scaled by intent.{" "}
-            <span className="text-text-primary/80">
-              Φ is the constant in everything we ship.
-            </span>
+            PhiBrain engineers{" "}
+            <span className="text-text-primary/90">
+              premium websites, web and mobile applications, and SaaS platforms
+            </span>{" "}
+            — designed end-to-end and secured at every layer. For ambitious
+            businesses that hold their work to a higher standard.
           </motion.p>
 
           <motion.div
@@ -149,19 +146,19 @@ export function Hero() {
             <ButtonLink href="#contact" size="lg" withArrow>
               Start a Project
             </ButtonLink>
-            <ButtonLink href="#services" size="lg" variant="ghost">
-              Explore the studio <ArrowRight size={16} strokeWidth={1.75} />
+            <ButtonLink href="#projects" size="lg" variant="ghost" withArrow>
+              See the work
             </ButtonLink>
           </motion.div>
 
-          {/* Duality strip — Structure · Fluidity · Trust */}
+          {/* Discipline strip — discipline-led, conceptual subtitle */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, ease: EASE, delay: 0.8 }}
             className="mt-3 grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-line bg-line"
           >
-            {HERO_DUALITY.map(({ icon: Icon, label, side }) => (
+            {DISCIPLINES.map(({ icon: Icon, label, note }) => (
               <div
                 key={label}
                 className="flex flex-col gap-1.5 bg-ink-700/60 px-4 py-3"
@@ -173,7 +170,7 @@ export function Hero() {
                   </span>
                 </div>
                 <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-text-muted">
-                  {side}
+                  {note}
                 </span>
               </div>
             ))}
@@ -187,36 +184,19 @@ export function Hero() {
           className="relative lg:col-span-5 flex items-center justify-center"
         >
           {isHeavy ? <Sculpture /> : <SculptureFallback />}
-
-          {/* Sculpture caption — editorial detail */}
-          <div className="pointer-events-none absolute -bottom-2 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1 md:flex">
-            <span className="h-3 w-px bg-line" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-text-muted">
-              <span className="text-accent">Φ</span> · The Constant
-            </span>
-          </div>
         </motion.div>
       </div>
 
-      {/* Bottom hairline indicator with brand narrative */}
+      {/* Bottom rail — quiet scroll cue with brand narrative */}
       <div className="shell mt-24 hidden items-center gap-6 text-[11px] text-text-muted md:flex">
         <span className="font-mono uppercase tracking-[0.22em]">Scroll</span>
         <div className="hairline flex-1" />
         <span className="font-mono uppercase tracking-[0.22em] text-text-primary/70">
-          {BRAND_NARRATIVE.map((word, i) => (
-            <span key={word}>
-              {i > 0 ? (
-                <span className="mx-3 text-accent" aria-hidden="true">
-                  Φ
-                </span>
-              ) : null}
-              {word}
-            </span>
-          ))}
+          Design  ·  Build  ·  Secure  ·  Scale
         </span>
         <div className="hairline w-16" />
-        <span className="font-mono uppercase tracking-[0.22em] text-accent">
-          Φ · 00
+        <span className="font-mono uppercase tracking-[0.22em] tabular-nums">
+          00
         </span>
       </div>
     </section>

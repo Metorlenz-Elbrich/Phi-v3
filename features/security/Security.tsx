@@ -6,7 +6,6 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { SECURITY_CAPABILITIES } from "@/lib/content";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 import { ButtonLink } from "@/components/ui/Button";
-import { PhiMark } from "@/components/ui/PhiMark";
 
 const SECURITY_ICONS = [ShieldCheck, Lock, Scan, FileCheck2] as const;
 
@@ -176,7 +175,7 @@ export function Security() {
                   className="flex items-baseline gap-3 text-base text-text-primary/90"
                 >
                   <span className="font-mono text-[10px] tabular-nums uppercase tracking-[0.22em] text-accent">
-                    Φ.{String(i + 1).padStart(2, "0")}
+                    {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="font-display tracking-tight">{line}</span>
                 </motion.li>
@@ -191,7 +190,9 @@ export function Security() {
                 <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-text-muted">
                   Defensive posture
                 </span>
-                <PhiMark size="md" className="text-accent" decorative />
+                <span className="font-mono text-[10px] tracking-[0.22em] text-accent/70 tabular-nums">
+                  04 · principles
+                </span>
               </div>
               <ul className="flex flex-col gap-3 text-sm">
                 {[
@@ -232,18 +233,13 @@ export function Security() {
                     variants={fadeUp}
                     className="group relative flex flex-col gap-3 bg-ink-700/70 p-6 transition-colors duration-500 hover:bg-ink-600/70"
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-line bg-white/[0.02] text-accent">
-                          <Icon size={14} strokeWidth={1.75} />
-                        </span>
-                        <h3 className="font-display text-base text-text-primary">
-                          {capability.title}
-                        </h3>
-                      </div>
-                      <span className="font-mono text-[10px] tabular-nums text-text-muted">
-                        Φ.{String(index + 1).padStart(2, "0")}
+                    <div className="flex items-center gap-3">
+                      <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-line bg-white/[0.02] text-accent">
+                        <Icon size={14} strokeWidth={1.75} />
                       </span>
+                      <h3 className="font-display text-base text-text-primary">
+                        {capability.title}
+                      </h3>
                     </div>
                     <p className="text-sm leading-relaxed text-text-muted">
                       {capability.description}
@@ -254,7 +250,12 @@ export function Security() {
             </motion.div>
 
             <div className="flex flex-wrap items-center gap-4">
-              <ButtonLink href="#contact" variant="outline" size="md" withArrow>
+              <ButtonLink
+                href="mailto:studio@phibrain.io?subject=Security%20review%20request"
+                variant="outline"
+                size="md"
+                withArrow
+              >
                 Request a security review
               </ButtonLink>
               <span className="text-xs text-text-muted">

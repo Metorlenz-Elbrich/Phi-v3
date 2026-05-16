@@ -39,7 +39,7 @@ A flat list of every component shipped, its file, its role and its runtime mode.
 | `lib/utils.ts` | `cn`, `clamp`, `lerp` | Class merge + math helpers |
 | `lib/fonts.ts` | `fontDisplay`, `fontSans`, `fontMono` | next/font loaders (Space Grotesk, Inter, JetBrains Mono) |
 | `lib/motion.ts` | `fadeUp`, `fadeIn`, `staggerContainer`, `wordReveal`, `lineReveal`, `EASE_*` | Framer Motion variant primitives |
-| `lib/content.ts` | `NAV_LINKS`, `SERVICES`, `PROCESS_STEPS`, `TRUST_ITEMS`, `PROJECTS`, `SECURITY_CAPABILITIES`, `SHOWCASE_PILLARS`, `BRAND_NARRATIVE` | All copy and data |
+| `lib/content.ts` | `NAV_LINKS`, `PILLARS`, `PROCESS_STEPS`, `TRUST_ITEMS`, `PROJECTS`, `SECURITY_CAPABILITIES`, `SHOWCASE_PILLARS`, `BRAND_NARRATIVE`, `STUDIO_EMAIL` | All copy and data |
 
 ## Feature components
 
@@ -61,8 +61,7 @@ A flat list of every component shipped, its file, its role and its runtime mode.
 
 | File | Component | Mode | Role |
 | --- | --- | --- | --- |
-| `Services.tsx` | `Services` | C | Section composition (Φ · 01) + grid + discipline counter |
-| `ServiceCard.tsx` | `ServiceCard` | C | Individual card with hover glow |
+| `Services.tsx` | `Services`, `PillarCard` | C | Four-pillar capability map (Design → Build → Secure → Scale) on a 2×2 grid. Each `PillarCard` shows pillar word, headline, body, nested services, capabilities, and an inquiry mailto. |
 
 ### Process (`features/process/`)
 

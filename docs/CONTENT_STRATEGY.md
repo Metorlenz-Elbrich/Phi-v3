@@ -64,13 +64,13 @@ This is **not** AI duality (left brain = logic, right brain = creativity is a po
 | Section | Distinctive line |
 | --- | --- |
 | Hero H1 | *"Built with structure. Designed with fluidity. Held to a single standard."* |
-| Hero sub | *"Φ is the constant in everything we ship."* |
-| Services | *"Seven disciplines. One studio. … where Φ-grade craft makes a measurable difference."* |
+| Hero sub (business clarity) | *"PhiBrain engineers premium websites, web and mobile applications, and SaaS platforms — designed end-to-end and secured at every layer. For ambitious businesses that hold their work to a higher standard."* |
+| Services title | *"One studio. Four disciplines. A single standard."* |
+| Services structure | Four pillars matching the brand narrative: **Design → Build → Secure → Scale** |
 | Process sub | *"Six disciplined phases. Each one earns the next. Φ is the constant."* |
 | Security H2 | *"Security is an architecture decision, not a checkbox."* |
 | Security doctrine | *"We don't sell badges. We sell posture." / "We model threats before we model UX." / "We assume breach. We design containment."* |
 | Final CTA | *"Let's build something exceptional."* + sub: *"built, designed and secured to a single standard."* |
-| Footer brand bar | *"The constant of exceptional digital craft."* |
 
 ## Banned vocabulary
 
@@ -93,18 +93,29 @@ Never appears anywhere on the site:
 
 The three projects in `lib/content.ts` are labeled `conceptual: true` and surfaced as a small chip on the case study card (`Conceptual`). The section header also states this honestly: *"The cases below are conceptual presentations of real engagement shapes — patterns we've shipped, with names abstracted."*
 
+## Business clarity contract
+
+A first-time visitor must understand within the first 5 seconds:
+
+1. **PhiBrain builds digital products.** Stated explicitly in the hero sub: *"websites, web and mobile applications, and SaaS platforms."*
+2. **PhiBrain does digital design.** Stated in *"designed end-to-end"* and in the Design pillar.
+3. **PhiBrain does cybersecurity.** Stated in *"secured at every layer"* and in the Secure pillar (its own dedicated section).
+
+The duality strip below the headline reinforces this with three labeled tiles: **Engineering · Design · Security**.
+
 ## Source of truth
 
 All copy is in **`lib/content.ts`**:
 
 - `NAV_LINKS`
-- `SERVICES`
+- `PILLARS` — the four disciplines (Design, Build, Secure, Scale) with their nested services
 - `PROCESS_STEPS`
 - `TRUST_ITEMS`
 - `PROJECTS`
 - `SECURITY_CAPABILITIES`
 - `SHOWCASE_PILLARS`
 - `BRAND_NARRATIVE`
+- `STUDIO_EMAIL`
 
 Changing copy means editing one typed file.
 

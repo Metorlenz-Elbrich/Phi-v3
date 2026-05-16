@@ -8,28 +8,43 @@ The principle is **engineering-grade visual discipline**. Every value exists bec
 
 PhiBrain's identity is anchored on the Greek letter **Φ (phi)** — the golden ratio, the constant of proportion, and the literal "Phi" in PhiBrain. It is the brand mark and shows up across the site as a quiet, consistent thread, never as decoration.
 
-### Φ usage rules
+### Φ usage rules — kept deliberately scarce
 
-| Where Φ appears | Why | How |
-| --- | --- | --- |
-| 3D sculpture (hero) | Central anchor of the asymmetric composition (engineering ↔ design) | Vertical rod + horizontal ring — geometry |
-| Hero atmosphere | Quiet watermark behind the headline | `PhiMark size="display"` at ~2.5% opacity |
-| Hero pill row | Brand identifier in the eyebrow | `PhiMark size="md"` |
-| Section eyebrows | Φ · 01 — Services / Φ · 02 — Process / … | `SectionIndex` primitive |
-| Process phase markers | `Φ.01 Discover` … `Φ.06 Scale` | Inline rendering |
-| Process active step | Massive Φ.0X watermark behind the active step content | `PhiMark size="display"` |
-| Security doctrine | `Φ.01` `Φ.02` `Φ.03` axioms | Inline mono labels |
-| Security diagram | Φ at the core node | SVG text |
-| Projects | Φ at the trust core / token core / hub node in each diagram | SVG text |
-| Final CTA | The visual anchor — massive stroked + filled Φ | Layered text composition |
-| Footer | Top brand bar signature + section group headers | `PhiMark` and inline |
+The site uses Φ in **eight named locations**. Every other use was audited out — a strong brand symbol loses impact through repetition.
 
-### Φ usage limits
+| Where Φ appears | Why |
+| --- | --- |
+| 3D sculpture (hero) | The central anchor — vertical rod + horizontal ring is the Φ glyph in geometry |
+| Hero atmosphere | Quiet watermark behind the headline (`PhiMark size="display"` at ~2.5% opacity) |
+| Hero pill row | Brand identifier in the eyebrow (single inline `PhiMark size="md"`) |
+| Section eyebrows | `Φ · 01 — Services` / `Φ · 02 — Process` / … via `SectionIndex` |
+| Process step rail | `Φ.01` … `Φ.06` markers on each step |
+| Process active step | Massive `Φ.0X` watermark behind the active content |
+| Final CTA | The visual centerpiece — massive stroked + gradient-filled Φ; brand narrative separators |
+| Footer signature | One small `PhiMark` next to the copyright line |
+
+### Φ usage limits (audited out)
+
+The polish pass removed Φ from places where it was decorative rather than load-bearing:
+
+- Trust strip header
+- Services discipline count
+- Security doctrine axioms (now plain `01 / 02 / 03`)
+- Security capability cards (now icon + title only)
+- Security defensive posture aside
+- Project case labels (now `Case · 01`)
+- Project total count
+- Footer top brand bar
+- Footer group headers
+- Hero corner mark
+- Hero sculpture caption
+
+### Φ usage hard rules
 
 - **Body text** — never. Φ is a mark, not a glyph in prose.
 - **CTA buttons** — never. CTAs stay clean.
 - **Card titles / service titles** — never. Φ does not prefix service names.
-- **Hover states** — only if it would already have been present (no surprises).
+- **Hover states** — only if already present in the resting state.
 
 The `PhiMark` component (`components/ui/PhiMark.tsx`) is the one canonical source for the glyph.
 

@@ -5,7 +5,6 @@ import { ArrowUpRight } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { PROJECTS } from "@/lib/content";
 import { fadeUp, staggerContainer } from "@/lib/motion";
-import { PhiMark } from "@/components/ui/PhiMark";
 
 /* -------------------------------------------------------------------------- */
 /*                      Per-project bespoke editorial visuals                 */
@@ -257,7 +256,7 @@ function ProjectStage({ index }: { index: number }) {
       </div>
 
       <div className="absolute left-4 top-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-text-muted">
-        <PhiMark size="sm" className="text-accent" decorative />
+        <span className="h-1.5 w-1.5 rounded-full bg-accent" />
         <span>Case · {String(index + 1).padStart(2, "0")}</span>
       </div>
     </div>
@@ -287,8 +286,8 @@ export function Projects() {
             }
             description="Most of our engagements ship under NDA. The cases below are conceptual presentations of real engagement shapes — patterns we've shipped, with names abstracted to protect the people we serve."
           />
-          <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted">
-            <span className="text-accent">Φ</span> · 03 selected
+          <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted tabular-nums">
+            03 selected
             <span className="mx-2 text-text-muted/50">·</span>
             All conceptual
           </span>
@@ -323,9 +322,8 @@ export function Projects() {
                   }`}
                 >
                   <header className="flex items-center justify-between">
-                    <span className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-accent">
-                      <PhiMark size="sm" className="text-accent" decorative />
-                      <span>.0{index + 1}</span>
+                    <span className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-accent tabular-nums">
+                      <span>Case · 0{index + 1}</span>
                       <span className="text-text-muted/40">·</span>
                       <span className="text-text-muted">{project.year}</span>
                     </span>
@@ -390,11 +388,17 @@ export function Projects() {
           })}
         </motion.div>
 
-        {/* Footer line */}
+        {/* Inquiry footer */}
         <div className="flex items-center gap-4 text-xs text-text-muted">
           <div className="hairline flex-1" />
           <span className="font-mono uppercase tracking-[0.22em]">
-            Speak under NDA · <span className="text-accent">studio@phibrain.io</span>
+            Want a closer look? Speak under NDA at{" "}
+            <a
+              href="mailto:studio@phibrain.io?subject=Case%20study%20conversation"
+              className="text-accent transition-colors hover:text-accent-soft"
+            >
+              studio@phibrain.io
+            </a>
           </span>
           <div className="hairline flex-1" />
         </div>
